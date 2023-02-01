@@ -45,21 +45,12 @@ usage = '''
 [3]-Disk mode
 
 '''
-print('Loading config...')
-
-cfg = configparser.ConfigParser()
-
-if os.path.exists('config.ini'):
-    cfg.read('config.ini')
-
-os.system('cls')
-
 print(banner)
 print(usage)
 
 i_mode = input('You select: ')
 
-with open(cfg['Cache']['Path'],'rb') as f_cache, mmap.mmap(f_cache.fileno(), 0, access=mmap.ACCESS_READ) as mm_cache:
+with open('./cache.chs','rb') as f_cache, mmap.mmap(f_cache.fileno(), 0, access=mmap.ACCESS_READ) as mm_cache:
     match i_mode:
         case '1':
             os.system('cls')

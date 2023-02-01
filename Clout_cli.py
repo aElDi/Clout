@@ -1,21 +1,13 @@
-import mmap, os, configparser, argparse, hashlib
+import mmap, os, argparse, hashlib
 
 CACHE = 0
 
 def init():
     global CACHE
 
-    cfg = configparser.ConfigParser()
-
-    if os.path.exists('./config.ini'):
-        cfg.read('./config.ini')
-        with open(cfg['Cache']['Path'],'rb') as ff:
+    if os.path.exists('./cache.chs'):
+        with open('./cache.chs','rb') as ff:
             CACHE = mmap.mmap(ff.fileno(), 0, access=mmap.ACCESS_READ)
-
-    else:
-        with open('./config.ini', 'w') as cfg_file:
-            cfg_file.write('[Cache]\r\npath = ./cache.chs')
-            cfg_file.close()
     
 
 def filescan(file):
@@ -32,7 +24,7 @@ def pathscan(directory):
             elif file.is_dir():
                 pathscan(file.path)
     except PermissionError:
-        print('[warn] - Perm error 4 ', directory)
+        print('[Wrn] - Permision error 4 ', directory)
         pass
 
 if __name__ == '__main__':
