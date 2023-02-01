@@ -38,7 +38,7 @@ Y8,            88  8b       d8  88       88    88
 '''
 
 usage = '''
-  [?] Select mode:
+\t[?] Select mode:
 
 [1]-File mode
 [2]-Directory mode
@@ -51,27 +51,6 @@ cfg = configparser.ConfigParser()
 
 if os.path.exists('config.ini'):
     cfg.read('config.ini')
-
-    # Another l4nguage
-    if int(cfg['Language']['Enable']):
-        with open(cfg['Language']['Path']) as f_lang:
-            banner, usage = f_lang.readlines()
-    
-    # Read hashes
-    if int(cfg['Cache']['Update']):
-        # Write Hashes
-        with open('cache.chs', 'w') as f_cache:
-            print('Fetching hashes...')
-            s_res = requests.get(
-                f'https://malshare.com/api.php?api_key={TOKEN}&action=getlist').json()
-            for h_virus in s_res:
-                f_cache.write(h_virus['md5'] + '\n')
-
-            cfg['Cache']['Update'] = '0'
-            cfg['Cache']['Path'] = 'cache.chs'
-            cfg.write(open('config.ini', 'w'))
-            f_cache.close()
-
 
 os.system('cls')
 

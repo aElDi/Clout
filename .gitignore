@@ -1,1 +1,7 @@
 /malshare_fucker
+.vscode/
+build/
+dist/
+*.exe
+*.spec
+*.chs
