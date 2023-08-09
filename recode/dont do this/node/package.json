@@ -1,0 +1,14 @@
+{
+  "name": "clout",
+  "version": "1.2.1",
+  "description": "Antivirus by aElDi",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "logger-service": "^1.0.2"
+  }
+}
