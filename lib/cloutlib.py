@@ -3,7 +3,6 @@ import os
 import logging
 import enum
 
-
 modules = []
 
 class CODES(enum.IntEnum):
@@ -12,7 +11,6 @@ class CODES(enum.IntEnum):
     NO_REQ = 3
     NO_FILE = 4
     INTERNAL_ERROR = 5
-    CODE10 = 10
 
 
 def load_modules(d):

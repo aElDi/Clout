@@ -2,3 +2,7 @@ yara.exe
 /venv
 /project
 /.idea
+**/__pycache__
+**/*.log
+/recode
+.gitignore

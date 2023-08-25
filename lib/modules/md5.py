@@ -26,8 +26,13 @@ class CLT_Md5Scanner(__scanner__.Scanner):
         except Exception:
             return {'code': self.CODES.INTERNAL_ERROR}
 
-
+#
+#   AI Generated so bad...
+#
     def scan_file(self, filepath):
-        h = hashlib.md5(open(filepath, 'rb').read())
-        print(h)
-        pass
+        try:
+            h = hashlib.md5(open(filepath, 'rb').read()).hexdigest()
+            if h in self.cache:
+                print(f"[Virus detected] File: {filepath}, MD5 Hash: {h}")
+        except Exception as e:
+            print(f"Error scanning file: {filepath}, Error: {str(e)}")

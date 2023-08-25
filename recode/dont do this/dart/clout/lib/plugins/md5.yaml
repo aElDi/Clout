@@ -1,3 +1,0 @@
-name: md5_scanner
-imports:
-  - dart:core

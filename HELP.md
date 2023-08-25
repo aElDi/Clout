@@ -1,75 +1,60 @@
+# Code Documentation
 
-Importing Required Libraries
-============================
+## Overview
+This code is a file scanning tool that uses dynamic module importing to load scanners and scan files in a specified directory.
 
-import os # Required to traverse through files and directories  
-import importlib # Required for importing python files dynamically  
-from concurrent.futures import ProcessPoolExecutor # Required for parallel processing
+## Usage
+To use this code, follow these steps:
 
-NUM\_PROCESSES = os.cpu\_count() # Getting the number of available CPU Cores in the system.
+1. Ensure that the required modules are installed. The code relies on the `os` and `importlib` modules, which are part of the Python standard library.
 
-Function Definition starts here.
-================================
+2. Place the code in a Python file with a `.py` extension.
 
-def files\_in\_dir(directory):
+3. Run the code by executing the Python file.
 
-```
-# Iterating through given directory, including all subdirectories.
-for dirpath, dirnames, filenames in os.walk(directory):
-    
-    # Looping through all file names in current directory
-    for filename in filenames:
-        # Returning full filepath for each file.
-        yield os.path.join(dirpath, filename)
-        
-    # Looping through all subdirectory names in current directory
-    for dirname in dirnames:
-        # Recursively calling itself to get a list of files in the subdirectory
-        yield from files_in_dir(os.path.join(dirpath, dirname))
-```
+4. The code will prompt you to enter a directory to scan. Provide the path to the directory you want to scan.
 
-Function to process each file with multiple scanners
-====================================================
+5. The code will dynamically import scanner modules from the `modules` directory. It will import all Python files ending with `.py` except for `scanner.py`.
 
-def process\_file(path, scanners):  
-for scanner in scanners:  
-scan\_data = scanner.scan\_file(path)  
-if scan\_data\[0\]:  
-\# Printing Virus Detected Scan Data  
-print(f"\[Virus detected\] Path: {path}, Scanner: {scanner}, Data: {scan\_data\[1\]}")
+6. Each scanner module should define a class with the same name as the module. The class should have a `scan_file` method that takes a file path as an argument and returns scan data.
 
-Main Function Definition starts here.
-=====================================
+7. The code will iterate over all files in the specified directory and its subdirectories. For each file, it will call the `scan_file` method of each scanner module and print any detected viruses.
 
-def main():
+8. Once the scan is complete, the code will print a success message.
 
-```
-scanners = [] # Create an empty list to store imported scanners.
+## Code Structure
+The code consists of the following main components:
 
-# Iterates through './modules' directory and imports any .py file other than 'scanner.py' dynamically.
-for file in os.scandir('./modules'):
-    if file.is_file() and file.name.endswith(".py") and file.name != "scanner.py":
-        module_name = file.name.split('.')[0]
-        module = importlib.import_module(f"modules.{module_name}")
-        scanner_class = getattr(module, module_name)
-        print('Module imported:', scanner_class().name)
-        scanners.append(scanner_class())
+- `files_in_dir(directory)`: A generator function that recursively yields all files in a directory and its subdirectories.
 
-# Requesting user for the input directory to be scanned.
-directory = input("Enter directory to scan: ").strip()
+- `process_file(path, scanners)`: A function that processes a file by calling the `scan_file` method of each scanner module and printing any detected viruses.
 
-inputs = list(files_in_dir(directory)) # Creating a list of file paths to be scanned.
+- `main()`: The main function that orchestrates the scanning process. It imports scanner modules, prompts for a directory to scan, and calls `process_file` for each file.
 
-with ProcessPoolExecutor(max_workers=NUM_PROCESSES) as executor:
-    for path in inputs:
-        # Submitting path and scanners list to the process_file function using the executor object.
-        executor.submit(process_file, path, scanners)
+- `if __name__ == "__main__":` block: The entry point of the code. It calls the `main` function when the code is run as a standalone script.
 
-print("Scan finished.")
-```
+## Customization
+To customize the code for your needs, you can:
 
-Checking if the current script is being executed directly.
-==========================================================
+- Add or remove scanner modules in the `modules` directory. Each scanner module should follow the defined structure.
 
-if **name** == "**main**":  
-main() # Running the program by calling the main() function.
+- Modify the file extensions or conditions for importing scanner modules in the `main` function.
+
+- Extend the functionality of the `scan_file` method in each scanner module to perform more advanced scanning techniques.
+
+- Modify the output format or add additional actions in the `process_file` function.
+
+## Example Scanner Module
+Here is an example of how a scanner module should be structured:
+
+```python
+# scanner_example.py
+
+class ScannerExample:
+    def __init__(self):
+        self.name = "Example Scanner"
+
+    def scan_file(self, path):
+        # Perform scanning logic here
+        # Return scan data, e.g., (True, "Virus found") or (False, "No virus found")
+        pass
